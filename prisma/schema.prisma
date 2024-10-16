@@ -1,0 +1,202 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Game_Fact_Table {
+  id Int @id
+
+  // Game Details
+  name         String
+  about        String
+  detailedDesc String
+  shortDesc    String
+  reviews      String
+  headerImg    String
+  website      String
+  supportURL   String
+  supportEmail String
+  price        Float
+  releaseDate  DateTime
+  requiredAge  Int
+  dlcCount     Int
+  achievements Int
+
+  // Average Playtime
+  avePlaytimeForever Int
+  avePlaytime2Weeks  Int
+  medPlaytimeForever Int
+  medPlaytime2Weeks  Int
+
+  // Metrics
+  peakCCU         Int
+  metacriticScore Int
+  metacriticURL   String
+  notes           String
+  scoreRank       String
+  positiveReviews Int
+  negativeReviews Int
+  estimatedOwners String
+  reviewerCount   Int
+
+  // Relations
+  dimPackages    dimPackage[]
+  dimScreenshots dimScreenshot[]
+  movies         Movie[]
+
+  dimGenre       dimGenre     @relation(fields: [dimGenreId], references: [dimGenreId])
+  dimLanguage    dimLanguage  @relation(fields: [dimLanguageId], references: [dimLanguageId])
+  dimDeveloper   dimDeveloper @relation(fields: [dimDeveloperId], references: [dimDeveloperId])
+  dimPublisher   dimPublisher @relation(fields: [dimPublisherId], references: [dimPublisherId])
+  dimCategory    dimCategory  @relation(fields: [dimCategoryId], references: [dimCategoryId])
+  dimSupport     dimSupport   @relation(fields: [dimSupportId], references: [supportId])
+  dimTag         dimTag       @relation(fields: [dimTagId], references: [dimTagId])
+  dimDate        dimDate      @relation(fields: [dimDateDate], references: [date])
+  dimGenreId     Int
+  dimLanguageId  Int
+  dimDeveloperId Int
+  dimPublisherId Int
+  dimCategoryId  Int
+  dimSupportId   Int
+  dimTagId       Int
+  dimDateDate    DateTime
+}
+
+model TextLanguage {
+  language      String
+  groupId       Int
+  dimLanguageId dimLanguage @relation(fields: [groupId], references: [dimLanguageId])
+
+  @@id([language, groupId])
+}
+
+model AudioLanguage {
+  language      String
+  groupId       Int
+  dimLanguageId dimLanguage @relation(fields: [groupId], references: [dimLanguageId])
+
+  @@id([language, groupId])
+}
+
+model dimLanguage {
+  dimLanguageId   Int               @id
+  Game_Fact_Table Game_Fact_Table[]
+  TextLanguage    TextLanguage[]
+  AudioLanguage   AudioLanguage[]
+}
+
+model dimPackage {
+  id              Int             @id @default(autoincrement())
+  gameId          Int
+  title           String
+  description     String
+  subs            dimPackageSub[]
+  Game_Fact_Table Game_Fact_Table @relation(fields: [gameId], references: [id])
+}
+
+model dimPackageSub {
+  id           Int         @id @default(autoincrement())
+  text         String
+  description  String
+  price        Float
+  dimPackage   dimPackage? @relation(fields: [dimPackageId], references: [id])
+  dimPackageId Int?
+}
+
+model Developer {
+  name             String
+  groupId          Int
+  developerGroupId dimDeveloper @relation(fields: [groupId], references: [dimDeveloperId])
+
+  @@id([name, groupId])
+}
+
+model dimDeveloper {
+  dimDeveloperId  Int               @id
+  Game_Fact_Table Game_Fact_Table[]
+  Developer       Developer[]
+}
+
+model Publisher {
+  name           String
+  groupId        Int
+  dimPublisherId dimPublisher @relation(fields: [groupId], references: [dimPublisherId])
+
+  @@id([name, groupId])
+}
+
+model dimPublisher {
+  dimPublisherId  Int               @id
+  Game_Fact_Table Game_Fact_Table[]
+  Publisher       Publisher[]
+}
+
+model Category {
+  name          String
+  groupId       Int
+  dimCategoryId dimCategory @relation(fields: [groupId], references: [dimCategoryId])
+
+  @@id([name, groupId])
+}
+
+model dimCategory {
+  dimCategoryId   Int               @id
+  Game_Fact_Table Game_Fact_Table[]
+  Category        Category[]
+}
+
+model Genre {
+  genre        String
+  groupId      Int
+  genreGroupId dimGenre @relation(fields: [groupId], references: [dimGenreId])
+
+  @@id([genre, groupId])
+}
+
+model dimGenre {
+  dimGenreId      Int               @id
+  Game_Fact_Table Game_Fact_Table[]
+  Genre           Genre[]
+}
+
+model dimScreenshot {
+  url             String          @id
+  Game_Fact_Table Game_Fact_Table @relation(fields: [gameId], references: [id])
+  gameId          Int
+}
+
+model Movie {
+  url             String          @id
+  Game_Fact_Table Game_Fact_Table @relation(fields: [gameId], references: [id])
+  gameId          Int
+}
+
+model Tag {
+  name           String
+  groupId        Int
+  GameTagGroupId dimTag @relation(fields: [groupId], references: [dimTagId])
+
+  @@id([name, groupId])
+}
+
+model dimTag {
+  dimTagId        Int               @id
+  Tag             Tag[]
+  Game_Fact_Table Game_Fact_Table[]
+}
+
+model dimSupport {
+  supportId       Int               @id
+  macSupport      Boolean
+  windowsSupport  Boolean
+  linuxSupport    Boolean
+  Game_Fact_Table Game_Fact_Table[]
+}
+
+model dimDate {
+  date            DateTime          @id
+  quarter         Int
+  month           String
+  year            Int
+  Game_Fact_Table Game_Fact_Table[]
+}
