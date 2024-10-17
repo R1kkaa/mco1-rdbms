@@ -42,7 +42,7 @@ model Game_Fact_Table {
   // Relations
   dimPackages    dimPackage[]
   dimScreenshots dimScreenshot[]
-  movies         Movie[]
+  movies         dimMovie[]
 
   dimGenre       dimGenre     @relation(fields: [dimGenreId], references: [dimGenreId])
   dimLanguage    dimLanguage  @relation(fields: [dimLanguageId], references: [dimLanguageId])
@@ -165,7 +165,7 @@ model dimScreenshot {
   gameId          Int
 }
 
-model Movie {
+model dimMovie {
   url             String          @id
   Game_Fact_Table Game_Fact_Table @relation(fields: [gameId], references: [id])
   gameId          Int
