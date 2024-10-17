@@ -4,3 +4,4 @@ node_modules
 prisma/migrations
 dev.db
 dev.db-journal
+ETL/desktop.ini
