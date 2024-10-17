@@ -5,3 +5,4 @@ prisma/migrations
 dev.db
 dev.db-journal
 ETL/desktop.ini
+ETL/games.json
