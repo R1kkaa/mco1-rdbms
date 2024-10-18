@@ -9,15 +9,15 @@ model Game_Fact_Table {
   // Game Details
   name         String
   about        String
-  detailedDesc String
-  shortDesc    String
-  reviews      String
+  detailedDesc String   @db.Text
+  shortDesc    String   @db.Text
+  reviews      String   @db.Text
   headerImg    String
   website      String
   supportURL   String
   supportEmail String
   price        Float
-  releaseDate  DateTime
+  releaseDate  DateTime @db.Date
   requiredAge  Int
   dlcCount     Int
   achievements Int
@@ -32,7 +32,7 @@ model Game_Fact_Table {
   peakCCU         Int
   metacriticScore Int
   metacriticURL   String
-  notes           String
+  notes           String @db.Text
   scoreRank       String
   positiveReviews Int
   negativeReviews Int
@@ -59,7 +59,7 @@ model Game_Fact_Table {
   dimCategoryId  Int
   dimSupportId   Int
   dimTagId       Int
-  dimDateDate    DateTime
+  dimDateDate    DateTime     @db.Date
 }
 
 model TextLanguage {
@@ -196,7 +196,7 @@ model dimSupport {
 }
 
 model dimDate {
-  date            DateTime          @id
+  date            DateTime          @id @db.Date
   quarter         Int
   month           String
   year            Int
