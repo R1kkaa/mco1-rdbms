@@ -16,4 +16,4 @@ Python Libraries Required:
 .env file contents:\
 DATABASE_URL="mysql://(user):(pass)@localhost:(portnumber)/(database-name)"\
 ALCHEMY_DATABASE_URL="mysql+mysqlconnector://(user):(pass)@localhost:(portnumber)/(database-name)"\
-ALCHEMY_DATABASE_URL-SAMPLE="mysql+mysqlconnector://(user):(pass)@localhost:(portnumber)/(sample-database-name)"\
+ALCHEMY_DATABASE_URL-SAMPLE="mysql+mysqlconnector://(user):(pass)@localhost:(portnumber)/(sample-database-name)"
